@@ -1,0 +1,13 @@
+{
+  "clientes": [
+    {
+      "nombre": "Jonathan",
+      "apellido": "Torres Maldonado",
+      "email": "jonathan.torresmald@gmail.com",
+      "movil": "633-333-333",
+      "empresa": "qwe",
+      "cargo": "qweqwe",
+      "id": 1
+    }
+  ]
+}
