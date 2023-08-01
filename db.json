@@ -7,7 +7,18 @@
       "movil": "633-333-333",
       "empresa": "qwe",
       "cargo": "qweqwe",
-      "id": 1
+      "id": 1,
+      "estado": true
+    },
+    {
+      "nombre": " Aitor",
+      "apellido": "Torres",
+      "email": "kur1oso@hotmail.com",
+      "movil": "666-666-666",
+      "empresa": "MerkaStar",
+      "cargo": "Manager",
+      "id": 3,
+      "estado": true
     }
   ]
 }

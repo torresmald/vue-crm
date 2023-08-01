@@ -1,9 +1,10 @@
 <script setup>
+import { onMounted, reactive } from "vue";
 import RouterLink from "../components/UI/RouterLink.vue";
 import Heading from "../components/UI/Heading.vue";
 import ClientesService from "../services/ClientesService";
 import { FormKit } from "@formkit/vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 defineProps({
   titulo: {
     type: String,
@@ -11,13 +12,24 @@ defineProps({
   },
 });
 const router = useRouter();
+const route = useRoute();
+const {id} = route.params;
+const formData = reactive({});
+onMounted(async () => {
+    const cliente = await ClientesService.obtenerCliente(id);
+    const {data} = cliente;
+    formData.nombre = data.nombre
+    formData.apellido = data.apellido
+    formData.email = data.email
+    formData.movil = data.movil
+    formData.empresa = data.empresa
+    formData.cargo = data.cargo
+
+})
 const handleSubmit = async (data) => {
-  data.estado = 1;
-  const cliente = await ClientesService.agregarClientes(data);
-  setTimeout(() => {
-    alert("Creado con Éxito");
-    router.push("/");
-  }, 1000);
+    const clienteEditado =await ClientesService.editarCliente(id, data)
+    alert('Editado con Éxito')
+    router.push('/')
 };
 </script>
 
@@ -31,7 +43,7 @@ const handleSubmit = async (data) => {
       <div class="mx-auto md:w-2/3 py-20 px-3">
         <FormKit
           type="form"
-          submit-label="Agregar"
+          submit-label="Editar"
           incomplete-message="Revisa todos los Campos"
           @submit="handleSubmit"
         >
@@ -42,6 +54,7 @@ const handleSubmit = async (data) => {
             validation="required"
             :validation-messages="{ required: 'El nombre es Obligatorio' }"
             placeholder="Nombre Cliente"
+            v-model="formData.nombre"
           />
           <FormKit
             type="text"
@@ -50,6 +63,8 @@ const handleSubmit = async (data) => {
             validation="required"
             :validation-messages="{ required: 'El apellido es Obligatorio' }"
             placeholder="Apellido Cliente"
+            v-model="formData.apellido"
+
           />
           <FormKit
             type="email"
@@ -61,6 +76,8 @@ const handleSubmit = async (data) => {
               email: 'El email no tiene un formato Válido',
             }"
             placeholder="Email Cliente"
+            v-model="formData.email"
+
           />
           <FormKit
             type="text"
@@ -72,18 +89,24 @@ const handleSubmit = async (data) => {
               matches: 'El móvil no tiene un formato Válido',
             }"
             placeholder="Teléfono: XXX-XXX-XXX"
+            v-model="formData.movil"
+
           />
           <FormKit
             type="text"
             name="empresa"
             label="Empresa"
             placeholder="Empresa Cliente"
+            v-model="formData.empresa"
+
           />
           <FormKit
             type="text"
             name="cargo"
             label="Cargo"
             placeholder="Cargo Cliente"
+            v-model="formData.cargo"
+
           />
         </FormKit>
         <p class="text-xs text-gray-400">Los Campos con * son Obligatorios</p>
